@@ -62,7 +62,6 @@ jobs:
       azureSubscription: 'Test'
       appType: functionApp
       appName: 'ProdApp'
-jobs:
 - job: test
   variables:
     connectionString: <test-stage connection string>

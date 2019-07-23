@@ -20,3 +20,68 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- task: AzureFunctionApp@1
+  displayName: Azure Function App deploy
+  inputs:
+    azureSubscription: 'Test'
+    appType: functionApp
+    appName: 'FirstApp'
+    package: $(build.artifactstagingdirectory)/**/*.zip
+jobs:
+
+- job: buildandtest
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+
+  # add steps here to build the app
+
+  # the following will publish an artifact called drop
+  - task: PublishBuildArtifacts@1
+
+  - task: AzureFunctionApp@1
+    inputs:
+      azureSubscription: 'Test'
+      appType: functionApp
+      appName: 'TestApp'
+
+- job: prod
+  pool:
+    vmImage: 'ubuntu-16.04'
+  dependsOn: buildandtest
+  condition: succeeded()
+  steps:
+
+  # step to download the artifacts from the previous job
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: drop
+
+  - task: AzureFunctionApp@1
+    inputs:
+      azureSubscription: 'Test'
+      appType: functionApp
+      appName: 'ProdApp'
+jobs:
+- job: test
+  variables:
+    connectionString: <test-stage connection string>
+  steps:
+  - task: AzureFunctionApp@1
+    inputs:
+      azureSubscription: 'Test'
+      appType: functionApp
+      appName: 'TestApp'
+      customWebConfig: -Handler iisnode -NodeStartFile server.js -appType node
+
+- job: prod
+  dependsOn: test
+  variables:
+    connectionString: <prod-stage connection string>
+  steps:
+  - task: AzureFunctionApp@1
+    inputs:
+      azureSubscription: 'Test'
+      appType: functionApp
+      appName: 'ProdApp'
+      customWebConfig: -Handler iisnode -NodeStartFile server.js -appType node      

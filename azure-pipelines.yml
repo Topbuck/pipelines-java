@@ -23,10 +23,12 @@ steps:
 - task: AzureFunctionApp@1
   displayName: Azure Function App deploy
   inputs:
-    azureSubscription: 'Test'
+    azureSubscription: 'AS'
     appType: functionApp
     appName: 'FirstApp'
     package: $(build.artifactstagingdirectory)/**/*.zip
+jobs:
+
 - job: buildandtest
   pool:
     vmImage: 'ubuntu-16.04'
@@ -39,7 +41,7 @@ steps:
 
   - task: AzureFunctionApp@1
     inputs:
-      azureSubscription: 'Test'
+      azureSubscription: 'AS'
       appType: functionApp
       appName: 'TestApp'
 
@@ -57,16 +59,17 @@ steps:
 
   - task: AzureFunctionApp@1
     inputs:
-      azureSubscription: 'Test'
+      azureSubscription: 'AS'
       appType: functionApp
-      appName: 'ProdApp'
+      appName: 'Prod'
+jobs:
 - job: test
   variables:
     connectionString: <test-stage connection string>
   steps:
   - task: AzureFunctionApp@1
     inputs:
-      azureSubscription: 'Test'
+      azureSubscription: 'AS'
       appType: functionApp
       appName: 'TestApp'
       customWebConfig: -Handler iisnode -NodeStartFile server.js -appType node
@@ -78,7 +81,7 @@ steps:
   steps:
   - task: AzureFunctionApp@1
     inputs:
-      azureSubscription: 'Test'
+      azureSubscription: 'AS'
       appType: functionApp
       appName: 'ProdApp'
-      customWebConfig: -Handler iisnode -NodeStartFile server.js -appType node      
+      customWebConfig: -Handler iisnode -NodeStartFile server.js -appType node

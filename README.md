@@ -1,4 +1,4 @@
-
+[![Build Status](https://dev.azure.com/rubdevopson/Testing/_apis/build/status/Topbuck.pipelines-java?branchName=master)](https://dev.azure.com/rubdevopson/Testing/_build/latest?definitionId=232&branchName=master)
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

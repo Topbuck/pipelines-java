@@ -26,4 +26,4 @@ steps:
     azureSubscription: 'AS'
     appType: functionApp
     appName: 'azfunctiontest1'
-    package: $(System.ArtifactsDirectory)/**/*.zip
+    package: $(System.ArtifactsDirectory)/**/*.war

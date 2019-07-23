@@ -25,5 +25,5 @@ steps:
   inputs:
     azureSubscription: 'AS'
     appType: functionApp
-    appName: 'FirstApp'
+    appName: 'azfunctiontest1'
     package: $(build.artifactstagingdirectory)/**/*.zip
